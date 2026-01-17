@@ -1,0 +1,26 @@
+{{ define "main" }}
+<div class="bunker-window min-h-[400px]">
+    <div class="window-title"><span>CONTENT_HOSTING</span><span>JOURNAL</span></div>
+    
+    <article class="cat-v-post">
+        <h2 class="text-2xl font-bold mb-1 leading-tight">{{ .Title }}</h2>
+        <div class="flex items-center gap-2 mb-4">
+            <span class="text-[10px] opacity-50">{{ .Date.Format "2006-01-02" }}</span>
+            {{ range .Params.tags }}
+            <span class="text-[9px] bg-black text-white px-1 uppercase">{{ . }}</span>
+            {{ end }}
+        </div>
+        
+        <div class="text-sm leading-relaxed space-y-4">
+            {{ if .Params.toc }}
+            <div class="bg-gray-100 p-2 border border-black mb-4 text-xs">
+                <p class="font-bold border-b border-black mb-2">TABLE_OF_CONTENTS</p>
+                {{ .TableOfContents }}
+            </div>
+            {{ end }}
+
+            {{ .Content }}
+        </div>
+    </article>
+</div>
+{{ end }}

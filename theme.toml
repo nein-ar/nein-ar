@@ -1,0 +1,13 @@
+name = "QUIXOTIST"
+license = "ISC"
+licenselink = "https://github.com/nein-ar"
+description = "A libertine, brutality-focused theme based on WERX"
+homepage = "https://github.com/nein-ar"
+tags = ["minimal", "brutalist", "plan9", "suckless", "clean"]
+features = ["blog", "docs", "mermaid", "chartjs", "mathjax"]
+min_version = "0.80.0"
+
+[author]
+  author = "xplshn"
+  homepage = "https://nein.ar"
+  repo = "https://github.com/nein-ar/nein-ar"
