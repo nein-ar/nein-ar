@@ -33,7 +33,7 @@ footnotereturnlinkcontents = "↗"
 
   # Footer Marquee Text
   [params.marquee]
-    text = "NO BLOAT. NO C++. JUST CODE. // VLLC // RUNNING ON 9FRONT // FULLY STATICALLY LINKED // EST. 2026 //"
+    text = "NO BLOAT. NO CPP. C99 SUPREMACY // PUBLIC DOMAIN // FULLY STATICALLY LINKED // INDUSTRIA ARGENTINA // EST. 2026 //"
 
   # ==========================================
   # LAYOUT CONFIGURATION (WIDGETS)

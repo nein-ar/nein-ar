@@ -3,7 +3,8 @@ title: "On the Supremacy of Rio over Modern Toolkits"
 date: 2026-01-17
 tags: ["PLAN 9", "UX", "SUCKLESS"]
 ---
-In the Plan 9 operating system, **rio** isn't just a window manager; it is a filesystem service. It represents the logical conclusion of "everything is a file." Modern desktops like GNOME or KDE have become bloated monoliths that treat the user as a consumer of widgets rather than a manipulator of data.
+
+In the Plan 9 operating system, **rio** isn’t just a window manager; it is a filesystem service. It represents the logical conclusion of “everything is a file.” Modern desktops like GNOME or KDE have become bloated monoliths that treat the user as a consumer of widgets rather than a manipulator of data.
 
 <h3 class="section-header">The Threefold Path</h3>
 <ul class="list-disc list-inside space-y-1 text-xs">
