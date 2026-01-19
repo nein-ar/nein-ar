@@ -36,7 +36,7 @@ jobs:
         with:
           fetch-depth: 1
         # ref: 'www'
-        # submodules: 'true'
+        submodules: 'true'
         # fetch-depth: 0
 
       - name: Configure Git safe.directory
