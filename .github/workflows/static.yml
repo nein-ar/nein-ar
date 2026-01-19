@@ -34,9 +34,9 @@ jobs:
       - name: Checkout GitHub repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
+          submodules: 'true'
         # ref: 'www'
-        submodules: 'true'
         # fetch-depth: 0
 
       - name: Configure Git safe.directory
