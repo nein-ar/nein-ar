@@ -1,6 +1,7 @@
 baseURL = 'https://nein.ar'
 languageCode = 'en-us'
 title = 'NEIN-AR'
+theme = "quixotist"
 
 publishDir = "pub"
 enableRobotsTXT = true
@@ -41,7 +42,7 @@ footnotereturnlinkcontents = "↗"
   # ==========================================
 
   # --- LEFT COLUMN WIDGETS ---
-  
+
   [[params.widgets.left]]
     title = "DIRECTORY"
     title_right = "[X]"
@@ -71,7 +72,7 @@ footnotereturnlinkcontents = "↗"
     title = "WEB_CLIQUE"
     title_right = "(+)"
     type = "buttons"
-    
+
     [[params.widgets.right.items]]
       name = "Subscribe"
       url = "/index.xml"
