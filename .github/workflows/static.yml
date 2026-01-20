@@ -42,16 +42,20 @@ jobs:
         run: |
           git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 
+      - name: Update git submodules
+        run: |
+          git submodule update --init --recursive
+
       - name: Generate the site
         run: |
           rm -rf ./pub
           tree
-          hugo
+          hugo --enableGitInfo
 
-          # Prepare git to commit changes
-          git config user.name '[CI]'
-          git config user.email 'action@github.com'
-
+          ## Prepare git to commit changes
+          #git config user.name '[CI]'
+          #git config user.email 'action@github.com'
+          #
           ## Commit changes dynamically
           #git add "./pub"
           #git commit -m "[www]" || echo "Nothing to commit"
