@@ -45,6 +45,7 @@ jobs:
       - name: Update git submodules
         run: |
           git submodule update --init --recursive
+          git submodule sync --recursive
 
       - name: Generate the site
         run: |
