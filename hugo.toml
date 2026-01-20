@@ -47,7 +47,7 @@ footnotereturnlinkcontents = "↗"
     title = "DIRECTORY"
     title_right = "[X]"
     type = "menu"
-    # Uses [menu.main] defined at the bottom
+    dynamic = true
 
   [[params.widgets.left]]
     title = "SYSTEM_STATUS"
@@ -65,6 +65,8 @@ footnotereturnlinkcontents = "↗"
   #  type = "hero"
   #  icon = "🦁"
   #  text = "Afuera el estado."
+
+  # --- CENTER COLUMN WIDGETS ---
 
   # --- RIGHT COLUMN WIDGETS ---
 
@@ -157,11 +159,6 @@ footnotereturnlinkcontents = "↗"
     name = "About"
     url = "/#about"
     weight = 1
-  [[menu.main]]
-    identifier = "archives"
-    name = "Archives"
-    url = "/posts"
-    weight = 2
   [[menu.main]]
     identifier = "subdomains"
     name = "Subdomains"
