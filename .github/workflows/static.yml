@@ -44,8 +44,8 @@ jobs:
 
       - name: Update git submodules
         run: |
-          git submodule update --init --recursive
-          git submodule sync --recursive
+          cd ./themes/quixotist
+          git pull
 
       - name: Generate the site
         run: |
