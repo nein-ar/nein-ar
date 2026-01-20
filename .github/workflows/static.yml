@@ -45,7 +45,7 @@ jobs:
       - name: Update git submodules
         run: |
           cd ./themes/quixotist
-          git pull
+          git pull --force
 
       - name: Generate the site
         run: |
@@ -53,14 +53,14 @@ jobs:
           tree
           hugo --enableGitInfo
 
-          ## Prepare git to commit changes
-          #git config user.name '[CI]'
-          #git config user.email 'action@github.com'
-          #
-          ## Commit changes dynamically
-          #git add "./pub"
-          #git commit -m "[www]" || echo "Nothing to commit"
-          #git push origin HEAD || echo "Push failed; check repository settings"
+          # Prepare git to commit changes
+          git config user.name '[CI]'
+          git config user.email 'action@github.com'
+          
+          # Commit changes
+          git add ./themes/quixotist ./.gitmodules
+          git commit -m "sync ./themes/quixotist" || echo "Nothing to commit"
+          git push origin HEAD || echo "Push failed; check repository settings"
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
