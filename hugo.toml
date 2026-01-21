@@ -18,8 +18,13 @@ footnotereturnlinkcontents = "↗"
 [params]
   subtitle = "SYSTEMS / SOFTWARE / PHILOSOPHY"
   avatar = "https://github.com/nein-ar.png"
-  favicon = "https://github.com/nein-ar.png"
+  #favicon = "https://github.com/nein-ar.png"
   description = "Dedicated to the cause"
+
+  window_status = "path"
+  home_window_status = "100% HEALTH"
+  window_title = "CONTENT_HOSTING"
+  home_window_title = "CONTENT_HOSTING"
 
   # Header Tags (The badges under the title)
   [[params.header_tags]]
@@ -58,7 +63,6 @@ footnotereturnlinkcontents = "↗"
       { key = "LOC", value = "Argentina" },
       { key = "MOOD", value = "Impacient" }
     ]
-    quote = "\"Beauty is the ultimate sophistication.\""
 
   #[[params.widgets.left]]
   #  title = "MILEI_LION"
