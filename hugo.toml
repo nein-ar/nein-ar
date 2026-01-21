@@ -61,7 +61,7 @@ footnotereturnlinkcontents = "↗"
     rows = [
       { key = "OS", value = "derivelinux" },
       { key = "LOC", value = "Argentina" },
-      { key = "MOOD", value = "Impacient" }
+      { key = "MOOD", value = "Impatient" }
     ]
 
   #[[params.widgets.left]]
