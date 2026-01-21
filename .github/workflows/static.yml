@@ -45,7 +45,8 @@ jobs:
       - name: Update git submodules
         run: |
           cd ./themes/quixotist
-          git pull --force
+          git fetch origin
+          git reset --hard origin/master
 
       - name: Generate the site
         run: |
