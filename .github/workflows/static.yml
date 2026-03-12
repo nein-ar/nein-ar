@@ -63,6 +63,9 @@ jobs:
           git commit -m "sync ./themes/quixotist" || echo "Nothing to commit"
           git push origin HEAD || echo "Push failed; check repository settings"
 
+      - name: Copy single pages to site
+        run: "cp -r ./single_pages ./pub/"
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
