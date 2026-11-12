@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ViMan - Manpage Viewer</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+      font-family: monospace;
+      font-size: 15px;
+      line-height: 1.35;
+      color: #000;
+      background: #fff;
+    }
+    #editor {
+      flex: 1;
+      border: none;
+      border-right: 1px solid #ccc;
+      padding: 1.2rem 1.5rem;
+      font: inherit;
+      outline: none;
+      resize: none;
+      background: #fdfdf5;
+    }
+    #viewer {
+      flex: 1;
+      padding: 1.2rem 2rem;
+      overflow-y: auto;
+      max-width: 80ch;
+    }
+
+    .header     { display: flex; justify-content: space-between; font-weight: bold; margin: 0 0 2em 0; }
+    .SH         { font-weight: bold; margin: 1.6em 0 0.6em 0; }
+    .SS         { font-weight: bold; margin: 1.3em 0 0.5em 3ch; }
+    .P          { margin: 0.8em 0; }
+    .indent     { margin-left: 6ch; }
+    .TP-term    { margin: 1em 0 0.2em 6ch; font-weight: bold; }
+    .TP-def     { margin: 0 0 0.7em 12ch; }
+    .EX         { margin: 0.8em 0 0.8em 6ch; white-space: pre; }
+    b           { font-weight: bold; }
+    i           { font-style: italic; }
+  </style>
+</head>
+<body>
+
+<textarea id="editor" spellcheck="false" autofocus>
+.TH EXAMPLE 1 "March 2026" "User Commands"
+.SH NAME
+example \- demonstrate basic command usage
+.SH SYNOPSIS
+.B example
+[\fB\-h\fR|\fB\-\-help\fR]
+[\fB\-v\fR|\fB\-\-verbose\fR]
+[\fB\-\-file\fR=\fIFILE\fR]
+[\fIarguments\fR...]
+.SH DESCRIPTION
+.B example
+is a minimal demonstration utility.
+.P
+Normal paragraphs are filled.
+Consecutive text lines without macros are joined.
+.P
+Empty lines create paragraph breaks.
+.SH OPTIONS
+.TP
+.B \-h, \-\-help
+Show usage information and exit.
+.TP
+.B \-v, \-\-verbose
+Be more verbose.
+May be repeated.
+.TP
+.BI \-\-file= FILE
+Read from FILE instead of stdin.
+.SH EXAMPLES
+Display help:
+
+.EX
+$ example --help
+.EE
+
+Run with increased verbosity and input file:
+
+.EX
+$ example -vv --file=data.txt arg1 arg2
+.EE
+
+Pipe input:
+
+.EX
+$ cat file.txt | example -v
+.EE
+.SH "SEE ALSO"
+.BR ls (1),
+.BR cat (1)
+</textarea>
+
+<div id="viewer"></div>
+
+<script>
+function parseMan(src) {
+  const lines = src.split('\n');
+  const out = [];
+  let para = [];
+  let fill = true;
+  let font = '';
+  let inTP = false;
+
+  function flush() {
+    if (!para.length) return;
+    const text = para.join(fill ? ' ' : '\n').trimEnd();
+    let cls = 'indent';
+    if (inTP) cls = 'TP-def';
+    out.push(`<div class="${cls}">${text}</div>`);
+    para = [];
+  }
+
+  function inline(txt) {
+    return txt
+      .replace(/\\fB(.*?)(?:\\f[RP]|$)/g, '<b>$1</b>')
+      .replace(/\\fI(.*?)(?:\\f[RP]|$)/g, '<i>$1</i>')
+      .replace(/\\f([BI])/g, (_,f) => `<${f==='B'?'b':'i'}>`)
+      .replace(/\\f[RP]/g, '</b></i>')
+      .replace(/\\-/g, '-')
+      .replace(/\\ /g, ' ');
+  }
+
+  for (let raw of lines) {
+    let line = raw.trimEnd();
+
+    if (!line) {
+      if (fill) flush();
+      continue;
+    }
+
+    if (line.startsWith('.')) {
+      flush();
+
+      const m = line.match(/^\.([A-Z][A-Z]?)(?:\s+(.*))?$/i);
+      if (!m) continue;
+      const cmd = m[1].toUpperCase();
+      let argstr = m[2] || '';
+      const args = argstr.match(/"[^"]*"|[^\s"]+/g) || [];
+
+      switch (cmd) {
+        case 'TH':
+          const [n, s, d, v] = args;
+          out.push(`<div class="header"><span>${n}(${s||1})</span><span>${d||''}</span><span>${v||''}</span></div>`);
+          break;
+        case 'SH':
+          out.push(`<div class="SH">${inline(args.join(' '))}</div>`);
+          inTP = false;
+          break;
+        case 'SS':
+          out.push(`<div class="SS">${inline(args.join(' '))}</div>`);
+          inTP = false;
+          break;
+        case 'PP': case 'P': case 'LP':
+          out.push(`<div class="P"></div>`);
+          inTP = false;
+          break;
+        case 'TP':
+          inTP = true;
+          if (args.length) {
+            out.push(`<div class="TP-term">${inline(args.join(' '))}</div>`);
+            inTP = false;
+          }
+          break;
+        case 'B': case 'I':
+          font = cmd;
+          if (args.length) {
+            const t = inline(args.join(' '));
+            out.push(`<div class="${inTP?'TP-def':'indent'}"><${cmd==='B'?'b':'i'}>${t}</${cmd==='B'?'b':'i'}></div>`);
+            font = '';
+          }
+          break;
+        case 'BR': case 'BI': case 'IB': case 'IR': case 'RI': case 'RB':
+          let html = '';
+          for (let i = 0; i < args.length; i++) {
+            const f = cmd[i%2] || 'R';
+            const tag = f==='B'?'b':f==='I'?'i':'';
+            html += tag ? `<${tag}>${inline(args[i])}</${tag}>` : inline(args[i]);
+          }
+          out.push(`<div class="${inTP?'TP-def':'indent'}">${html}</div>`);
+          break;
+        case 'NF': case 'EX':
+          fill = false;
+          flush();
+          break;
+        case 'FI': case 'EE':
+          fill = true;
+          flush();
+          break;
+        case '\\"':
+          break;
+        default:
+          para.push(`[.${cmd} ${args.join(' ')}]`);
+      }
+    } else {
+      line = inline(line);
+      if (inTP) {
+        out.push(`<div class="TP-term">${line}</div>`);
+        inTP = false;
+      } else {
+        para.push(line);
+      }
+    }
+  }
+
+  flush();
+  return out.join('\n');
+}
+
+const ed = document.getElementById('editor');
+const view = document.getElementById('viewer');
+
+function render() {
+  view.innerHTML = parseMan(ed.value);
+}
+
+ed.addEventListener('input', render);
+render();
+</script>
+</body>
+</html>

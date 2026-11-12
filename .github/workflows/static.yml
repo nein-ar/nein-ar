@@ -1,0 +1,69 @@
+name: Deploy static content to Pages
+
+on:
+  push:
+    branches: ["master"]
+  workflow_dispatch:
+
+
+permissions:
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-26.04
+
+    container:
+      image: alpine:latest
+
+    steps:
+      - name: Install Hugo, Git, and the worst version of Tar
+        run: |
+          apk update
+          apk add hugo git tar
+
+      - name: Checkout GitHub repo
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          submodules: 'true'
+        # ref: 'www'
+
+      - name: Configure Git safe.directory
+        run: |
+          git config --global --add safe.directory "${GITHUB_WORKSPACE}"
+
+      - name: Update git submodules
+        run: |
+          cd ./themes/quixotist
+          git fetch origin
+          git reset --hard origin/master
+
+      - name: Generate the site
+        run: |
+          rm -rf ./pub
+          tree
+          hugo --enableGitInfo
+
+      - name: Copy single pages to site
+        run: "cp -r ./single_pages ./pub/"
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: "./pub"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

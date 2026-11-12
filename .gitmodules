@@ -1,0 +1,3 @@
+[submodule "quixotist"]
+	path = themes/quixotist
+	url = https://github.com/nein-ar/quixotist
